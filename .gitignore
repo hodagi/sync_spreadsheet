@@ -14,4 +14,4 @@ node_modules
 tmp
 .clasprc.json
 .clasp.json
-creds.json
+.creds.json
