@@ -1,8 +1,4 @@
-// スプレッドシートの内容をカレンダーに転記する
-function transferSpreadsheetToCalendar() {
-
-    // ジャガー用カレンダーID
-    calendarId_jaguer = ScriptProperties.getProperty('CALENDAR_ID_JAGUER');
+function main() {
 
     // GoogleCloudEvent投稿用カレンダーID
     calendarId_post = ScriptProperties.getProperty('CALENDAR_ID_CCOE');
@@ -13,21 +9,31 @@ function transferSpreadsheetToCalendar() {
     // スプレッドシート名
     spreadSheetName = ScriptProperties.getProperty('SPREAD_SHEET_NAME_CCOE');
 
+    transferSpreadsheetToCalendar(calendarId_post, spreadSheetId, spreadSheetName);
+}
+
+// スプレッドシートの内容をカレンダーに転記する
+function transferSpreadsheetToCalendar(calendarId, spreadSheetId, spreadSheetName) {
+
     // スプレッドシートの取得
-    let sheet = SpreadsheetApp.openById(spreadSheetId).getSheetByName(sheetName);
+    let sheet = SpreadsheetApp.openById(spreadSheetId).getSheetByName(spreadSheetName);
 
-
-    const lastRow = sheet.getLastRow() - 1;
+    // 一番最後の行を取得する
+    const lastRow = sheet.getLastRow();
+    //const range = sheet.getRange(lastRow, 1);
+    //const nextRow = range.getNextDataCell(SpreadsheetApp.Direction.DOWN).getRow();
+    //const lastDataRow = nextRow - 1;
 
     // スプレッドシートからカレンダーに転記するデータを取得
-    //let data = sheet.getDataRange().getValues();
-    let data = sheet.getRange(2, 1, lastRow, 4).getValues();
+    // 2行目の2列目から最後の行の5列目まで
+    let data = sheet.getRange(2, 2, lastRow, 5).getValues();
 
     // カレンダーの取得
     let calendar = CalendarApp.getCalendarById(calendarId);
 
     // スプレッドシートの各行のデータをカレンダーに転記
     data.slice(1).forEach(row => {
+        Logger.log(row)
         const [title, startDate, endDate, description] = row;
         const start = new Date(startDate);
         const end = new Date(endDate);

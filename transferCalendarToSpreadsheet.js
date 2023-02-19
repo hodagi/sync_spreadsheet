@@ -1,8 +1,5 @@
 function main() {
 
-    // ジャガー用カレンダーID
-    calendarId_jaguer = ScriptProperties.getProperty('CALENDAR_ID_JAGUER');
-
     // GoogleCloudEvent投稿用カレンダーID
     calendarId_post = ScriptProperties.getProperty('CALENDAR_ID_CCOE');
 
@@ -26,21 +23,6 @@ function main() {
 
     // GoogleSpreadSheetにGooleCalendaのeventデータを書き込む
     writeCalendar(matchingEvents, spreadSheetId, sheetName);
-}
-
-// GoogleCalendarからデータを取得する
-function loadEvents(calendarId, start, end, grep) {
-    var calendar = CalendarApp.getCalendarById(calendarId);
-    let events = calendar.getEvents(start, end);
-
-    // 取得したタイトルのうち、条件に合致するものを取得する
-    let results = [];
-    const filteredEvents = events.filter(event => {
-        const title = event.getTitle();
-        return title.includes(grep);
-    });
-    results.push(...filteredEvents);
-    return results
 }
 
 // GoogleCalendarからデータを取得する_part2
