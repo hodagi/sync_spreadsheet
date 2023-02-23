@@ -1,4 +1,7 @@
-function main() {
+function main1() {
+
+    //ジャガーのカレンダーID
+    calendarId_jaguer = ScriptProperties.getProperty('CALENDAR_ID_JAGUAR');
 
     // GoogleCloudEvent投稿用カレンダーID
     calendarId_post = ScriptProperties.getProperty('CALENDAR_ID_CCOE');
@@ -6,23 +9,22 @@ function main() {
     // GoogleCloudEvent管理用ExcelファイルID
     spreadSheetId = ScriptProperties.getProperty('SPREAD_SHEET_ID_CCOE');
 
+    // スプレッドシート名
+    spreadSheetName = ScriptProperties.getProperty('SPREAD_SHEET_NAME_JAGUAR');
+
     // ジャガー用カレンダー用パラメーター
     // grepしたいタイトル名
     let grep = "";
     // 今日からいつまで検索するか？
-    let enddate_year = 2025;
-    let enddate_month = 12;
-    let enddate_day = 31;
-    // スプレッドシートのシート名
-    let sheetName = "ジャガーイベント一覧";
+    let toYear = 5;
 
     // GoogleCalendarからデータを取得する
     let start = new Date();
-    let end = new Date(enddate_year, enddate_month, enddate_day);
+    let end = new Date(start.getFullYear() + toYear, start.getMonth(), start.getDate());
     let matchingEvents = loadEvents_part2(calendarId_jaguer, start, end, grep);
 
     // GoogleSpreadSheetにGooleCalendaのeventデータを書き込む
-    writeCalendar(matchingEvents, spreadSheetId, sheetName);
+    writeCalendar(matchingEvents, spreadSheetId, spreadSheetName);
 }
 
 // GoogleCalendarからデータを取得する_part2
